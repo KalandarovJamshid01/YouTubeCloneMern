@@ -1,16 +1,37 @@
 const User = require("./../model/user");
-
-const signUp = async (req, res) => {
+const bcrypt = require("bcryptjs");
+const createError = require("./error");
+const jwt = require("jsonwebtoken");
+const signUp = async (req, res, next) => {
   try {
-    console.log(req.body);
-  } catch (error) {
-    console.log(error);
+    const salt = bcrypt.genSaltSync(10);
+    const hash = bcrypt.hashSync(req.body.password, salt);
+    const newUser = new User({ ...req.body, password: hash });
+    await newUser.save();
+    res.status(201).send("User has been created");
+  } catch (err) {
+    console.log(err);
+    next(createError(404, "not found"));
   }
 };
-const signIn = async (req, res) => {
+const signIn = async (req, res, next) => {
   try {
-  } catch (error) {
-    console.log(error);
+    const user = await User.findOne({ name: req.body.name });
+    if (!user) {
+      return next(createError(404, "Usr not found"));
+    }
+
+    const isCorrect = await bcrypt.compare(req.body.password, user.password);
+    if (!isCorrect) {
+      return next(createError(404, "Wrong pAssword"));
+    }
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+    res.cookie("token", token, {
+      httpOnly: true,
+    });
+  } catch (err) {
+    console.log(err);
+    return next(err);
   }
 };
 
