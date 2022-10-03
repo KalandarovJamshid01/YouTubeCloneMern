@@ -53,6 +53,7 @@ const addView = async (req, res, next) => {
 const random = async (req, res, next) => {
   try {
     const videos = await Video.aggregate([{ $sample: { size: 40 } }]);
+    console.log("random videos");
     res.status(200).json(videos);
   } catch (error) {
     next(err);
@@ -98,7 +99,9 @@ const getByTag = async (req, res, next) => {
 const search = async (req, res, next) => {
   const query = req.query.q;
   try {
-    const videos = await Video.find({ title: { $regex: query, $options: "i" } });
+    const videos = await Video.find({
+      title: { $regex: query, $options: "i" },
+    });
     res.status(200).json(videos);
   } catch (error) {
     next(err);
