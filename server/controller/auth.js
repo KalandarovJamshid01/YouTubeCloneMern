@@ -26,9 +26,17 @@ const signIn = async (req, res, next) => {
       return next(createError(404, "Wrong pAssword"));
     }
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
-    res.cookie("token", token, {
-      httpOnly: true,
-    });
+
+    const { password, ...others } = user._doc;
+    res
+      .cookie("token", token, {
+        httpOnly: true,
+      })
+      .status(200)
+      .json({
+        token,
+        others,
+      });
   } catch (err) {
     console.log(err);
     return next(err);
