@@ -59,6 +59,7 @@ const getUser = async (req, res, next) => {
 };
 const subscribe = async (req, res, next) => {
   try {
+    console.log(req.user);
     await User.findByIdAndUpdate(req.user.id, {
       $push: { subscribedUsers: req.params.id },
     });

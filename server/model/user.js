@@ -23,9 +23,8 @@ const userSchema = mongoose.Schema(
       type: Number,
       deafult: 0,
     },
-
     subscribedUsers: {
-      type: [String],
+      type: [mongoose.Schema.ObjectId],
     },
   },
   {
