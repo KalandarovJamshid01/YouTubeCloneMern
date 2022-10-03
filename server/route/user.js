@@ -6,7 +6,7 @@ router.route("/").get(User.getAll);
 
 router.route("/sub/:id").patch(verifyToken, User.subscribe);
 router.patch("unsub/:id", verifyToken, User.unSubscribe);
-router.patch("like/:videoId", verifyToken, User.like);
+router.patch("/like/:videoId", verifyToken, User.like);
 router.patch("/dislike/:videoId", verifyToken, User.disLike);
 router
   .route("/:id")
