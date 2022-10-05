@@ -12,16 +12,17 @@ const Container = styled.div`
 
 const Home = (type) => {
   const [videos, setVideos] = useState([]);
+  console.log(type);
   useEffect(() => {
     const fetchVideos = async () => {
       const res = await axios.get(
-        `http://localhost:8000/api/v1/videos/${type}`
+        `/videos/${type.type}`
       );
       console.log(res.data + "--------------------------------");
       setVideos(res.data);
     };
     fetchVideos();
-  }, [type]);
+  }, [type.type]);
 
   return (
     <Container>

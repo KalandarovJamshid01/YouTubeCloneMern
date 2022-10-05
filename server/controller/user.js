@@ -55,7 +55,7 @@ const getUser = async (req, res, next) => {
       return next(error(404, "not found"));
     }
   } catch (error) {
-    return next(err);
+    return next(error);
   }
 };
 const subscribe = async (req, res, next) => {
@@ -126,3 +126,4 @@ module.exports = {
   disLike,
   getAll,
 };
+

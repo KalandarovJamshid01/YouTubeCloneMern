@@ -2,8 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { format } from "timeago.js";
-import axios from "axios"
-
+import axios from "axios";
+import { useEffect, useState } from "react";
 const Container = styled.div`
   width: ${(props) => props.type !== "sm" && "360px"};
   margin-bottom: ${(props) => (props.type === "sm" ? "10px" : "45px")};
@@ -56,9 +56,10 @@ const Info = styled.div`
 const Card = ({ type, video }) => {
   const [channel, setChannel] = useState({});
   useEffect(() => {
+    console.log(video);
     const fetchChannels = async () => {
       const res = await axios.get(
-        `http://localhost:8000/api/v1/users/${video.userId}`
+        `/users/${video.userId}`
       );
       console.log(res.data + "--------------------------------");
       setChannel(res.data);
@@ -67,17 +68,14 @@ const Card = ({ type, video }) => {
   }, [video.userId]);
 
   return (
-    <Link to="/video/test" style={{ textDecoration: "none" }}>
+    <Link to="/video" style={{ textDecoration: "none" }}>
       <Container type={type}>
         <Image type={type} src={video.imgUrl} />
         <Details type={type}>
-          <ChannelImage
-            type={type}
-            src={channel.img}
-          />
+          <ChannelImage type={type} src={channel.img} />
           <Texts>
             <Title>{video.title}</Title>
-            <ChannelName>{ channel.name}</ChannelName>
+            <ChannelName>{channel.name}</ChannelName>
             <Info>
               {video.views} views • {format(video.createdAt)}
             </Info>

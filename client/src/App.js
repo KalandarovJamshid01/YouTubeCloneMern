@@ -35,7 +35,7 @@ function App() {
                 <Route path="/">
                   <Route index element={<Home type="random"/>} />
                   <Route path="trends" element={<Home type="trend" />} />
-                  <Route path="subscription" element={<Home type="ыги" />} />
+                  <Route path="subscription" element={<Home type="sub" />} />
                   <Route path="signin" element={<SignIn />} />
                   <Route path="video">
                     <Route path=":id" element={<Video />} />
