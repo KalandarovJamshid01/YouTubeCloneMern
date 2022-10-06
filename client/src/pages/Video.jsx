@@ -5,16 +5,24 @@ import ThumbDownOffAltOutlinedIcon from "@mui/icons-material/ThumbDownOffAltOutl
 import ReplyOutlinedIcon from "@mui/icons-material/ReplyOutlined";
 import AddTaskOutlinedIcon from "@mui/icons-material/AddTaskOutlined";
 import Comments from "../components/Comments";
-import Card from "../components/Card";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
-import { fetchSuccess } from "../redux/videoSlice";
+import {
+  fetchStart,
+  fetchSuccess,
+  fetchFailure,
+  like,
+  dislike,
+} from "../redux/videoSlice";
+import { subscription } from "./../redux/userSlice";
 import { format } from "timeago.js";
 import ThumbUpOutlined from "@mui/icons-material/ThumbUpOutlined";
-
+import ThumbDown from "@mui/icons-material/ThumbDown";
+import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 const Container = styled.div`
   display: flex;
   gap: 24px;
@@ -112,10 +120,10 @@ const Subscribe = styled.button`
   cursor: pointer;
 `;
 
-const VideoFrame = astyled.video`
-max-height:720px;
-width:100%;
-object-fit:cover;
+const VideoFrame = styled.video`
+  max-height: 720px;
+  width: 100%;
+  object-fit: cover;
 `;
 
 const Video = () => {
@@ -123,13 +131,16 @@ const Video = () => {
   const { currentVideo } = useSelector((state) => state.video);
   const dispatch = useDispatch();
   console.log(currentVideo);
+  console.log(currentUser);
   const path = useLocation().pathname.split("/")[2];
+  console.log(path);
 
   const [channel, setChannel] = useState({});
   useEffect(() => {
     const fetchData = async () => {
       try {
         const videoRes = await axios.get(`/videos/${path}`);
+        console.log( "sasasasasasas",videoRes.data);
         const channelRes = await axios.get(`/users/${videoRes.userId}`);
         setChannel(channelRes.data);
         dispatch(fetchSuccess(videoRes.data));
@@ -157,25 +168,25 @@ const Video = () => {
     <Container>
       <Content>
         <VideoWrapper>
-          <VideoFrame src={currentVideo.videoUrl}></VideoFrame>
+          <VideoFrame src={currentVideo?.videoUrl}></VideoFrame>
         </VideoWrapper>
-        <Title>{currentVideo.title}</Title>
+        <Title>{currentVideo?.title}</Title>
         <Details>
           <Info>
-            {currentVideo.views} views • {format(currentVideo.createdAt)}
+            {currentVideo?.views} views • {format(currentVideo?.createdAt)}
           </Info>
           <Buttons>
             <Button onClick={handleLike}>
-              {currentVideo.likes?.includes(currentUser._id) ? (
+              {currentVideo?.likes?.includes(currentUser?._id) ? (
                 <ThumbUpIcon />
               ) : (
                 <ThumbUpOutlinedIcon />
               )}
-              {""} {currentVideo.likes?.length}{" "}
+              {""} {currentVideo?.likes?.length}{" "}
             </Button>
             <Button onClick={handleDisLike}>
-              {currentVideo.dislike?.includes(currentUser._id) ? (
-                <ThumbDownIcon />
+              {currentVideo?.dislike?.includes(currentUser?._id) ? (
+                <ThumbDown />
               ) : (
                 <ThumbDownOffAltOutlinedIcon />
               )}
