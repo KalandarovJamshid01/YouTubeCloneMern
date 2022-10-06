@@ -6,7 +6,6 @@ import { loginFailure, loginSuccess, loginStart } from "../redux/userSlice";
 import { useDispatch } from "react-redux";
 import { auth, provider } from "../firebase";
 import { signInWithPopup } from "firebase/auth";
-import { async } from "@firebase/util";
 const Container = styled.div`
   display: flex;
   flex-direction: column;
