@@ -131,20 +131,23 @@ const Video = () => {
   const { currentVideo } = useSelector((state) => state.video);
   const dispatch = useDispatch();
   console.log(currentVideo);
-  console.log(currentUser);
   const path = useLocation().pathname.split("/")[2];
   console.log(path);
 
   const [channel, setChannel] = useState({});
+
   useEffect(() => {
+    dispatch(fetchStart());
     const fetchData = async () => {
       try {
         const videoRes = await axios.get(`/videos/${path}`);
-        console.log( "sasasasasasas",videoRes.data);
+        console.log("sasasasasasas", videoRes.data);
         const channelRes = await axios.get(`/users/${videoRes.userId}`);
         setChannel(channelRes.data);
         dispatch(fetchSuccess(videoRes.data));
-      } catch (error) {}
+      } catch (error) {
+        dispatch(fetchFailure());
+      }
     };
     fetchData();
   }, [path, dispatch]);
