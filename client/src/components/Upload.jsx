@@ -7,6 +7,7 @@ import {
 } from "firebase/storage";
 import React, { useEffect } from "react";
 import { useState } from "react";
+import app from "../firebase";
 const Container = styled.div`
   width: 100%;
   height: 100%;
@@ -85,7 +86,7 @@ const Upload = (setOpen) => {
     setTags(e.target.value.split(","));
   };
   const uploadFile = (file, urlType) => {
-    const storage = getStorage();
+    const storage = getStorage(app);
 
     const fileName = new Date().getTime() + file.name;
     const storageRef = ref(storage, file.name);
@@ -117,7 +118,7 @@ const Upload = (setOpen) => {
         // Upload completed successfully, now we can get the download URL
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
           setInputs((prev) => {
-            return { ...prev, urlType, downloadURL };
+            return { ...prev, [urlType]: downloadURL };
           });
         });
       }
@@ -125,10 +126,10 @@ const Upload = (setOpen) => {
   };
 
   useEffect(() => {
-    video && uploadFile(video);
+    video && uploadFile(video, "videoUrl");
   }, [video]);
   useEffect(() => {
-    img && uploadFile(img);
+    img && uploadFile(img, "imgUrl");
   }, [img]);
   return (
     <Container>
@@ -166,8 +167,8 @@ const Upload = (setOpen) => {
           onChange={handleTags}
         />
 
-        {videoPerc > 0 ? (
-          "Uploading" + imgPerc
+        {imgPerc > 0 ? (
+          "Uploading" + imgPerc + "%"
         ) : (
           <Input
             type="file"

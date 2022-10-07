@@ -169,7 +169,6 @@ const Video = () => {
   };
   return (
     <Container>
-      salom
       <Content>
         <VideoWrapper>
           <VideoFrame src={currentVideo?.videoUrl}></VideoFrame>
