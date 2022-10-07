@@ -29,15 +29,22 @@ const Input = styled.input`
   width: 100%;
 `;
 
-const Comments = (videoId) => {
+const Comments = ({ salom }) => {
   const { currentUser } = useSelector((state) => state.user);
-  const [comments, setComments] = useState({});
+  const [comments, setComments] = useState([]);
 
   useEffect(() => {
-    const fetchComments = async () => {
-      const res = await axios.get(`/comments/${videoId}`);
-    };
-  });
+    try {
+      const fetchComments = async () => {
+        const res = await axios.get(`/comments/${salom}`);
+        setComments(res.data);
+        console.log(res, "ressssssssssssssssssss");
+      };
+      fetchComments();
+    } catch (error) {
+      console.log(error.message);
+    }
+  }, [salom]);
 
   return (
     <Container>

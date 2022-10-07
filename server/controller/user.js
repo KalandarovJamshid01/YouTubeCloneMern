@@ -116,6 +116,16 @@ const disLike = async (req, res, next) => {
     return next(error);
   }
 };
+
+const getOne = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.params.id);
+
+    res.status(200).json(user);
+  } catch (err) {
+    console.log(err);
+  }
+};
 module.exports = {
   update,
   deleteUser,
@@ -125,5 +135,5 @@ module.exports = {
   like,
   disLike,
   getAll,
+  getOne,
 };
-

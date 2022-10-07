@@ -16,13 +16,12 @@ export const videoSlice = createSlice({
       state.loading = false;
       state.currentVideo = action.payload;
       // alert(action.payload);
-      console.log("asassasasa", action.payload);
+      console.log("salom", action.payload);
     },
-    fetchFailure: (state) => {
+    fetchFailure: (state, action) => {
       state.loading = false;
-      state.error = true;
+      state.error = action.payload;
       console.log("asassasasa", state.error);
-
     },
     like: (state, action) => {
       if (!state.currentVideo.likes.includes(action.payload)) {

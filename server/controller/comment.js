@@ -14,6 +14,7 @@ const addComment = async (req, res, next) => {
 const getComment = async (req, res, next) => {
   try {
     const comments = await Comment.find({ videoId: req.params.videoId });
+    console.log("comments");
     res.status(200).json(comments);
   } catch (error) {
     next(error);

@@ -130,7 +130,7 @@ const Video = () => {
   const { currentUser } = useSelector((state) => state.user);
   const { currentVideo } = useSelector((state) => state.video);
   const dispatch = useDispatch();
-  console.log(currentVideo);
+  console.log("currrrrrrrrrrrrrrrrrrrrrrrrrr", currentVideo._id);
   const path = useLocation().pathname.split("/")[2];
   console.log(path);
 
@@ -142,11 +142,11 @@ const Video = () => {
       try {
         const videoRes = await axios.get(`/videos/${path}`);
         console.log("sasasasasasas", videoRes.data);
-        const channelRes = await axios.get(`/users/${videoRes.userId}`);
+        const channelRes = await axios.get(`/users/${videoRes?.data?.userId}`);
         setChannel(channelRes.data);
         dispatch(fetchSuccess(videoRes.data));
       } catch (error) {
-        dispatch(fetchFailure());
+        alert(error.message);
       }
     };
     fetchData();
@@ -169,6 +169,7 @@ const Video = () => {
   };
   return (
     <Container>
+      salom
       <Content>
         <VideoWrapper>
           <VideoFrame src={currentVideo?.videoUrl}></VideoFrame>
@@ -216,11 +217,11 @@ const Video = () => {
           <Subscribe onClick={handleSub}>
             {currentUser.subscribedUser?.includes(channel._id)
               ? "SUBSCRIBED"
-              : "SUbscribe"}
+              : "Subscribe"}
           </Subscribe>
         </Channel>
         <Hr />
-        <Comments videoId={currentVideo._id} />
+        <Comments salom={currentVideo?._id} />
       </Content>
       {/* <Recommendation>
         <Card type="sm" />

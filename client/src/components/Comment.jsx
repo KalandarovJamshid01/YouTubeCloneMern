@@ -44,11 +44,11 @@ const Comment = ({ comment }) => {
   const [channel, setChannel] = useState({});
 
   useEffect(() => {
-    const fetchComments = async () => {
+    const fetchComment = async () => {
       const res = await axios.get(`/users/${comment.userId}`);
       setChannel(res.data);
     };
-    fetchComments();
+    fetchComment();
   }, [comment.userId]);
   return (
     <Container>
