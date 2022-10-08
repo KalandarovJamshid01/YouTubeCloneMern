@@ -128,7 +128,7 @@ const Video = () => {
   const { currentUser } = useSelector((state) => state.user);
   const { currentVideo } = useSelector((state) => state.video);
   const dispatch = useDispatch();
-  console.log("currrrrrrrrrrrrrrrrrrrrrrrrrr", currentVideo._id);
+  console.log("currrrrrrrrrrrrrrrrrrrrrrrrrr", currentVideo);
   const path = useLocation().pathname.split("/")[2];
   console.log(path);
 
@@ -201,6 +201,7 @@ const Video = () => {
             </Button>
           </Buttons>
         </Details>
+
         <Hr />
         <Channel>
           <ChannelInfo>
@@ -217,10 +218,11 @@ const Video = () => {
               : "Subscribe"}
           </Subscribe>
         </Channel>
-        <Hr />
+
+       <Hr />
         <Comments salom={currentVideo?._id} />
+      <Recommendation tags={currentVideo.tags} /> 
       </Content>
-      <Recommendation tags={currentVideo.tags} />
     </Container>
   );
 };

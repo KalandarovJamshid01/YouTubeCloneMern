@@ -6,6 +6,7 @@ import { loginFailure, loginSuccess, loginStart } from "../redux/userSlice";
 import { useDispatch } from "react-redux";
 import { auth, provider } from "../firebase";
 import { signInWithPopup } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -72,6 +73,7 @@ const SignIn = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -79,6 +81,18 @@ const SignIn = () => {
     try {
       const res = await axios.post("/auth/signin", { name, password });
       dispatch(loginSuccess(res.data));
+      navigate("/");
+    } catch (error) {
+      dispatch(loginFailure());
+    }
+  };
+  const handleRegister = async (e) => {
+    e.preventDefault();
+    dispatch(loginStart());
+    try {
+      const res = await axios.post("/auth/signup", { name, password, email });
+      dispatch(loginSuccess(res.data));
+      navigate("/");
     } catch (error) {
       dispatch(loginFailure());
     }
@@ -97,6 +111,7 @@ const SignIn = () => {
           .then((res) => {
             dispatch(loginSuccess(res.data));
           });
+        navigate("/");
       })
       .catch((error) => {
         dispatch(loginFailure());
@@ -129,7 +144,7 @@ const SignIn = () => {
           placeholder="password"
           onChange={(e) => setPassword(e.target.value)}
         />
-        <Button>Sign up</Button>
+        <Button onClick={handleRegister}>Sign up</Button>
       </Wrapper>
       <More>
         English(USA)

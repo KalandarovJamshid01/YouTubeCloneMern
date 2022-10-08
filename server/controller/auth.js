@@ -8,7 +8,18 @@ const signUp = async (req, res, next) => {
     const hash = bcrypt.hashSync(req.body.password, salt);
     const newUser = new User({ ...req.body, password: hash });
     await newUser.save({ validateBeforeSave: true });
-    res.status(201).send("User has been created");
+    const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET);
+
+    const { password, ...others } = newUser._doc;
+    res
+      .cookie("token", token, {
+        httpOnly: true,
+      })
+      .status(200)
+      .json({
+        token,
+        others,
+      });
   } catch (err) {
     console.log(err);
     next(createError(404, "not found"));
@@ -49,7 +60,7 @@ const google = async (req, res, next) => {
     if (user) {
       const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
       res
-        .cookie("access_token", token, {
+        .cookie("token", token, {
           httpOnly: true,
         })
         .status(200)
@@ -63,7 +74,7 @@ const google = async (req, res, next) => {
       console.log(savedUser);
       const token = jwt.sign({ id: savedUser._id }, process.env.JWT_SECRET);
       res
-        .cookie("access_token", token, {
+        .cookie("token", token, {
           httpOnly: true,
         })
         .status(200)

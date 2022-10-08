@@ -69,6 +69,8 @@ const User = styled.div`
 
 const Navbar = () => {
   const { currentUser } = useSelector((state) => state.user);
+
+  console.log(currentUser,"currrrrrrrrrrrrrrrrrrrrrrrrrrrr");
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const [q, setQ] = useState("false");
@@ -86,8 +88,8 @@ const Navbar = () => {
           {currentUser ? (
             <User>
               <VideoCallOutlinedIcon onClick={() => setOpen(true)} />
-              <Avatar src={currentUser.img} />
-              {currentUser.name}
+              <Avatar src={currentUser?.img } />
+              {currentUser.name ?currentUser.name :currentUser.others.name}
             </User>
           ) : (
             <Link to="signin" style={{ textDecoration: "none" }}>

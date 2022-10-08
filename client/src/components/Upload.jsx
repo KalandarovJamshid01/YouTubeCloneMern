@@ -70,7 +70,7 @@ const Button = styled.button`
 const Label = styled.label`
   font-size: 14px;
 `;
-const Upload = (setOpen) => {
+const Upload = ({setOpen}) => {
   const [img, setImg] = useState(undefined);
   const [video, setVideo] = useState(undefined);
   const [imgPerc, setImgPerc] = useState(0);
@@ -136,10 +136,11 @@ const Upload = (setOpen) => {
     img && uploadFile(img, "imgUrl");
   }, [img]);
   const handleUpload = async (e) => {
+    console.log(setOpen,"setOpeeeeeeeeeeeeeeeeeeee");
     e.preventDefault();
     const res = await axios.post("/videos", { ...inputs, tags });
-    // setOpen(false);
     res.status === 200 && navigate(`/videos/${res.data._id}`);
+    setOpen(false);
   };
 
   return (
