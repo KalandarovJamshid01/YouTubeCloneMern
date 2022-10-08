@@ -218,11 +218,10 @@ const Video = () => {
               : "Subscribe"}
           </Subscribe>
         </Channel>
-
-       <Hr />
+        <Hr />
         <Comments salom={currentVideo?._id} />
-      <Recommendation tags={currentVideo.tags} /> 
       </Content>
+      <Recommendation tags={currentVideo.tags} />
     </Container>
   );
 };
