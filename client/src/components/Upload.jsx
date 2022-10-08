@@ -8,6 +8,8 @@ import {
 import React, { useEffect } from "react";
 import { useState } from "react";
 import app from "../firebase";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 const Container = styled.div`
   width: 100%;
   height: 100%;
@@ -75,7 +77,7 @@ const Upload = (setOpen) => {
   const [videoPerc, setVideoPerc] = useState(0);
   const [inputs, setInputs] = useState({});
   const [tags, setTags] = useState([]);
-
+  const navigate = useNavigate();
   const handleChange = (e) => {
     setInputs((prev) => {
       return { ...prev, [e.target.name]: e.target.value };
@@ -100,7 +102,9 @@ const Upload = (setOpen) => {
         // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
         const progress =
           (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        urlType === "imgUrl" ? setImgPerc(progress) : setVideoPerc(progress);
+        urlType === "imgUrl"
+          ? setImgPerc(Math.round(progress))
+          : setVideoPerc(Math.round(progress));
 
         switch (snapshot.state) {
           case "paused":
@@ -131,6 +135,13 @@ const Upload = (setOpen) => {
   useEffect(() => {
     img && uploadFile(img, "imgUrl");
   }, [img]);
+  const handleUpload = async (e) => {
+    e.preventDefault();
+    const res = await axios.post("/videos", { ...inputs, tags });
+    // setOpen(false);
+    res.status === 200 && navigate(`/videos/${res.data._id}`);
+  };
+
   return (
     <Container>
       <Wrapper>
@@ -139,7 +150,7 @@ const Upload = (setOpen) => {
         <Title>Upload a new Video</Title>
         <Label>Video:</Label>
         {videoPerc > 0 ? (
-          "Uploading" + videoPerc
+          "Uploading" + videoPerc + "%"
         ) : (
           <Input
             type="file"
@@ -176,7 +187,7 @@ const Upload = (setOpen) => {
             onChange={(e) => setImg(e.target.files[0])}
           />
         )}
-        <Button>Upload</Button>
+        <Button onClick={handleUpload}>Upload</Button>
       </Wrapper>
     </Container>
   );

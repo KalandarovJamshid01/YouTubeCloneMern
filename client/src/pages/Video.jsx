@@ -23,6 +23,7 @@ import { format } from "timeago.js";
 import ThumbUpOutlined from "@mui/icons-material/ThumbUpOutlined";
 import ThumbDown from "@mui/icons-material/ThumbDown";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
+import Recommendation from "../components/Recommendation";
 const Container = styled.div`
   display: flex;
   gap: 24px;
@@ -69,9 +70,6 @@ const Hr = styled.hr`
   border: 0.5px solid ${({ theme }) => theme.soft};
 `;
 
-const Recommendation = styled.div`
-  flex: 2;
-`;
 const Channel = styled.div`
   display: flex;
   justify-content: space-between;
@@ -171,7 +169,7 @@ const Video = () => {
     <Container>
       <Content>
         <VideoWrapper>
-          <VideoFrame src={currentVideo?.videoUrl}></VideoFrame>
+          <VideoFrame src={currentVideo?.videoUrl} controls></VideoFrame>
         </VideoWrapper>
         <Title>{currentVideo?.title}</Title>
         <Details>
@@ -222,21 +220,7 @@ const Video = () => {
         <Hr />
         <Comments salom={currentVideo?._id} />
       </Content>
-      {/* <Recommendation>
-        <Card type="sm" />
-        <Card type="sm" />
-        <Card type="sm" />
-        <Card type="sm" />
-        <Card type="sm" />
-        <Card type="sm" />
-        <Card type="sm" />
-        <Card type="sm" />
-        <Card type="sm" />
-        <Card type="sm" />
-        <Card type="sm" />
-        <Card type="sm" />
-        <Card type="sm" />
-      </Recommendation> */}
+      <Recommendation tags={currentVideo.tags} />
     </Container>
   );
 };
