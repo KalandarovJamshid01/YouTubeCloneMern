@@ -140,7 +140,7 @@ const Menu = ({ darkMode, setDarkMode }) => {
             <Hr />
           </>
         )}
-        <Title>BEST OF LAMATUBE</Title>
+        <Title>BEST OF MAGICTUBE</Title>
         <Item>
           <LibraryMusicOutlinedIcon />
           Music
